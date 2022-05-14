@@ -83,7 +83,8 @@ class TLMN_Env(gym.Env):
                     print(Style.RESET_ALL)
                     reset_deal_cards = True
                     break
-
+                
+                temp_list.sort(key=lambda x:x.stt)
                 self.players_cards[player.name] = temp_list.copy()
                 reset_deal_cards = False
                 i += 1
