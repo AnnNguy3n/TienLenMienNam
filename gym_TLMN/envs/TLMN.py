@@ -20,6 +20,7 @@ def p_rint_list_card(list_card: list):
         
     print(Style.RESET_ALL)
 
+
 class TLMN_Env(gym.Env):
     metadata = {'render.modes': ['human']}
 
