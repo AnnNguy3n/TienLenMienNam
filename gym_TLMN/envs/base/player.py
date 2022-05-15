@@ -7,10 +7,15 @@ class Player:
     def __init__(self, name: str):
         self.__name = name
         self.__full_action = list(pandas.read_csv('gym_TLMN/envs/action_space.csv')['action_code'])
+        self.__amount_action_space = self.__full_action.__len__()
         self.reset()
 
     def reset(self):
         self.__played_cards = []
+
+    @property
+    def amount_action_space(self):
+        return self.__amount_action_space
 
     @property
     def name(self):
