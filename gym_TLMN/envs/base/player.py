@@ -75,8 +75,8 @@ class Player:
         
         check_, score = self.check_hand_card(board_list_card)
         if check_ == 'Error_input':
-            print(Fore.LIGHTRED_EX + 'State đầu vào của hàm get_action bị sai')
-            print(Style.RESET_ALL)
+            # print(Fore.LIGHTRED_EX + 'State đầu vào của hàm get_action bị sai')
+            # print(Style.RESET_ALL)
             return self.action_space(
                 [],
                 {'list_card': [], 'hand_name': 'Nothing', 'hand_score': -1},

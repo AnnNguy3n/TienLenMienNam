@@ -10,9 +10,9 @@ class Agent(Player):
     def action(self, dict_input):
         list_action = self.get_list_index_action(self.get_list_state(dict_input))
 
-        print(list_action)
+        # print(list_action)
         action = random.choice(list_action)
-        print(action)
+        # print(action)
         victory = self.check_victory(self.get_list_state(dict_input))
         if victory == 1:
             # print(Fore.LIGHTYELLOW_EX + self.name + ' thắng', end='')
