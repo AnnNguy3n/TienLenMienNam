@@ -1,3 +1,4 @@
+from copy import deepcopy
 import gym
 import gym_TLMN
 
@@ -11,7 +12,7 @@ def main():
     for i in range(500):
         env.render()
 
-        o,a,done,t = env.step(env.turn.action(env.dict_input))
+        o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
         if done:
             break
 
@@ -20,6 +21,6 @@ def main():
     for i in range(env.players.__len__()):
         env.render()
 
-        o,a,done,t = env.step(env.turn.action(env.dict_input))
+        o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
 
 main()
