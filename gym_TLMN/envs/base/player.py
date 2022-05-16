@@ -46,9 +46,9 @@ class Player:
             return [list_all_action_code.index(action_code) for action_code in list_action_code]
         
         return [0]
-    
+
     def check_victory(self, state: list):
-        temp = state[157:161]
+        temp = state[106:110]
         if min(temp) == 0:
             if temp[0] == 0:
                 return 1
@@ -58,78 +58,28 @@ class Player:
         return -1
 
     def get_action_space_from_list_state(self, state: list):
-        board_turn_cards_ = state[52:104]
-        my_cards_ = state[104:156]
-        my_id_ = state[156]
-        turn_cards_owner_id_ = state[165]
+        my_list_card = [Card(i) for i in range(52) if state[54:106][i] == 1]
+        turn_card_owner = state[114]
+        _temp_ = ['Nothing', 'Single', 'Pair']\
+                + [f'{k}_of_a_kind' for k in [3,4]]\
+                + [f'{k}_pairs_straight' for k in [3,4]]\
+                + [f'{k}_straight' for k in range(3,12)]
 
-        board_list_card = [Card(i) for i in range(52) if board_turn_cards_[i] == 1]
-        my_list_card = [Card(i) for i in range(52) if my_cards_[i] == 1]
+        hand_name = _temp_[state[52]]
+        hand_score = state[53]
 
-        if my_id_ == turn_cards_owner_id_ or board_list_card.__len__() == 0:
+        if turn_card_owner == 0 or hand_name == 'Nothing':
             return self.action_space(
                 my_list_card,
                 {'list_card': [], 'hand_name': 'Nothing', 'hand_score': -1},
                 self.name
             )
-        
-        check_, score = self.check_hand_card(board_list_card)
-        if check_ == 'Error_input':
-            # print(Fore.LIGHTRED_EX + 'State đầu vào của hàm get_action bị sai')
-            # print(Style.RESET_ALL)
-            return self.action_space(
-                [],
-                {'list_card': [], 'hand_name': 'Nothing', 'hand_score': -1},
-                'NotMe132465'
-            )
 
-        else:
-            return self.action_space(
-                my_list_card,
-                {'list_card': board_list_card, 'hand_name': check_, 'hand_score': score},
-                'NotMe132465'
-            )
-
-    def check_hand_card(self, list_card: list):
-        len_ = list_card.__len__()
-        if len_ == 0:
-            return 'Nothing', -1
-
-        v_list = [i.score for i in list_card]
-        val_list = [i.stt for i in list_card]
-
-        # Kiểm tra xem có 2 lá bài nào trùng hay không
-        temp_list = []
-        for i in val_list:
-            if i in temp_list:
-                return 'Error_input', -7
-            
-            temp_list.append(i)
-
-        if len_ == 1:
-            return 'Single', list_card[0].stt
-
-        if len_ == 2:
-            if self.list_card_hand(list_card, 'Pair').__len__() != 0:
-                return 'Pair', max(val_list)
-
-            return 'Error_input', -7
-
-        # Kiểm tra xem có phải là sảnh
-        if max(v_list) - min(v_list) == (len_-1) and max(v_list) != 12:
-            if self.list_card_hand(list_card, f'{len_}_straight').__len__() != 0:
-                return f'{len_}_straight', max(val_list)
-
-        # Kiểm tra xem có phải bộ ba hoặc tứ quý
-        if max(v_list) == min(v_list):
-            return f'{len_}_of_a_kind', max(val_list)
-
-        # Kiểm tra dây đôi thông
-        if len_ % 2 == 0 and len_ >= 6:
-            if self.list_card_hand(list_card, f'{len_//2}_pairs_straight').__len__() != 0:
-                return f'{len_//2}_pairs_straight', max(val_list)
-
-        return 'Error_input', -7
+        return self.action_space(
+            my_list_card,
+            {'list_card': [], 'hand_name': hand_name, 'hand_score': hand_score},
+            'NotMe132465'
+        )
 
     def action_space(self, list_card: list, board_turn_cards: dict, board_turn_cards_owner: str):
         possible_action = self.possible_action(list_card)
@@ -204,40 +154,48 @@ class Player:
         list_played_card = [card.stt for card in dict_input['Board'].played_cards]
         temp_1 = [1 if i in list_played_card else 0 for i in range(52)]
 
-        # Các lá bài hiện tại cần phải chặn 52 103
-        list_turn_card = [card.stt for card in dict_input['Board'].turn_cards['list_card']]
-        temp_2 = [1 if i in list_turn_card else 0 for i in range(52)]
+        # Bộ hiện tại cần chặn 52 53
+        _temp_ = ['Nothing', 'Single', 'Pair']\
+                + [f'{k}_of_a_kind' for k in [3,4]]\
+                + [f'{k}_pairs_straight' for k in [3,4]]\
+                + [f'{k}_straight' for k in range(3,12)]
+        hand_name_index = _temp_.index(dict_input['Board'].turn_cards['hand_name'])
+        hand_name_score = dict_input['Board'].turn_cards['hand_score']
 
-        # Các lá bài của người chơi hiện tại 104 155
+        # Các lá bài của bản thân 54 105
         turn_player_cards = [card.stt for card in dict_input['Turn_player_cards']]
         temp_3 = [1 if i in turn_player_cards else 0 for i in range(52)]
 
-        # Id của người chơi hiện tại 156
-        list_player_name = [p.name for p in dict_input['Player']]
-        turn_id = list_player_name.index(self.name)
-
-        # 4 pt, số lá bài còn lại của các người chơi theo góc nhìn agent 157 160
+        # Số lá bài còn lại của các người chơi theo góc nhìn agent 106 109
         temp_4_ = [13 for i in range(4)]
-        for i in range(list_player_name.__len__()):
+        for i in range(dict_input['Player'].__len__()):
             temp_4_[i] = dict_input['Player'][i].amount_cards_remaining
-        
-        temp_4 = temp_4_[turn_id:] + temp_4_[:turn_id]
 
-        # 4 pt, tình trạng theo vòng hoặc bỏ vòng của các người chơi theo góc nhìn agent 161 164
+        list_player_name = [p.name for p in dict_input['Player']]
+        my_id = list_player_name.index(self.name)
+        temp_4 = temp_4_[my_id:] + temp_4_[:my_id]
+
+        # Tình trạng bỏ vòng 110 113
         temp_5_ = [0 for i in range(4)]
         for i in dict_input['Playing_id']:
             temp_5_[i] = 1
 
-        temp_5 = temp_5_[turn_id:] + temp_5_[:turn_id]
+        temp_5 = temp_5_[my_id:] + temp_5_[:my_id]
 
-        # Id của người chơi đang là chủ nhân của các lá bài cần chặn trên bàn 165
+        # Chủ nhân của bài trên bàn, 0 nếu là mình 114
         temp_6 = -1
-        for i in range(list_player_name.__len__()):
+        for i in range(dict_input['Player'].__len__()):
             if dict_input['Player'][i].name == dict_input['Board'].turn_cards_owner:
                 temp_6 = i
                 break
-        
-        return temp_1 + temp_2 + temp_3 + [turn_id] + temp_4 + temp_5 + [temp_6]
+
+        if temp_6 != -1:
+            if my_id <= temp_6:
+                temp_6 -= my_id
+            else:
+                temp_6 = (3-my_id) + temp_6
+
+        return temp_1 + [hand_name_index, hand_name_score] + temp_3 + temp_4 + temp_5 + [temp_6]
 
     def list_card_hand(self, _list_card: list, hand_name: str):
         list_return = []
