@@ -1,6 +1,7 @@
 from copy import deepcopy
 import gym
 import gym_TLMN
+import time
 
 
 def main():
@@ -16,11 +17,14 @@ def main():
         if done:
             break
 
-        # input()
-
     for i in range(env.players.__len__()):
         env.render()
 
         o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
 
-main()
+start = time.time()
+for i in range(1):
+    main()
+
+end = time.time()
+print(end - start, 'sec')

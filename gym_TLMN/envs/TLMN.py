@@ -2,7 +2,6 @@ from colorama import Fore, Style
 import gym
 import random
 import pandas
-from copy import deepcopy
 from gym_TLMN.envs.base.board import Board
 from gym_TLMN.envs.base.card import Card
 from gym_TLMN.envs.base.player import Player
@@ -60,12 +59,14 @@ class TLMN_Env(gym.Env):
             for player in self.players:
                 player.reset()
                 temp_list = [hidden_cards[j] for j in range(total_play_cards) if j % self.players.__len__() == i]
+                temp_list.sort(key=lambda x:x.stt)
 
                 # Kiểm tra tứ quý 2
                 check_list = self.admin.list_card_hand(temp_list, '4_of_a_kind')
                 if check_list.__len__() != 0 and max(i['hand_score'] for i in check_list) >= 48:
                     print(Fore.LIGHTYELLOW_EX + f'{player.name} có tứ quý Hai nên chia lại bài', end='')
                     print(Style.RESET_ALL)
+                    p_rint_list_card(temp_list)
                     reset_deal_cards = True
                     break
 
@@ -74,6 +75,7 @@ class TLMN_Env(gym.Env):
                 if check_list.__len__() != 0:
                     print(Fore.LIGHTYELLOW_EX + f'{player.name} có 5 đôi thông nên chia lại bài', end='')
                     print(Style.RESET_ALL)
+                    p_rint_list_card(temp_list)
                     reset_deal_cards = True
                     break
 
@@ -82,10 +84,10 @@ class TLMN_Env(gym.Env):
                 if check_list.__len__() != 0:
                     print(Fore.LIGHTYELLOW_EX + f'{player.name} sảnh rồng nên chia lại bài', end='')
                     print(Style.RESET_ALL)
+                    p_rint_list_card(temp_list)
                     reset_deal_cards = True
                     break
                 
-                temp_list.sort(key=lambda x:x.stt)
                 self.players_cards[player.name] = temp_list.copy()
                 reset_deal_cards = False
                 i += 1
@@ -140,7 +142,9 @@ class TLMN_Env(gym.Env):
                             break
 
                     if not check:
-                        print(Fore.LIGHTRED_EX + 'Index action không đúng: ' + str(action_player))
+                        print(Fore.LIGHTRED_EX + 'Index action không đúng: ' + str(action_player), end='')
+                        print(Style.RESET_ALL)
+                        input(Fore.LIGHTYELLOW_EX + 'Action người chơi đang chưa đúng, nhấn phím bất kì để bỏ qua dòng cảnh báo này!'.upper() + Style.RESET_ALL)
                         self.process([])
 
             done = self.close()
@@ -177,6 +181,9 @@ class TLMN_Env(gym.Env):
                     pass
                 
                 print(Style.RESET_ALL)
+                if check_ == 'Error_input':
+                    input(Fore.LIGHTYELLOW_EX + 'Action người chơi đang chưa đúng, nhấn phím bất kì để bỏ qua dòng cảnh báo này!'.upper() + Style.RESET_ALL)
+                    pass
 
                 # Thay đổi thẻ trên bàn chơi
                 self.board._Board__turn_cards = {'list_card': [], 'hand_name': 'Nothing', 'hand_score': -1}
@@ -224,6 +231,7 @@ class TLMN_Env(gym.Env):
                 if score < self.board.turn_cards['hand_score']:
                     print(Fore.LIGHTCYAN_EX + self.turn.name + Fore.LIGHTYELLOW_EX + ' đánh bài thấp hơn nên bị loại khỏi vòng: ', end='')
                     _p_rint_list_card_(action_player, check_)
+                    input(Fore.LIGHTYELLOW_EX + 'Action người chơi đang chưa đúng, nhấn phím bất kì để bỏ qua dòng cảnh báo này!'.upper() + Style.RESET_ALL)
                     elimination = True
                 else:
                     elimination = False
@@ -267,6 +275,7 @@ class TLMN_Env(gym.Env):
                 if (check_ != 'Nothing') and (check_ != 'Error_input') and check_ != self.board.turn_cards ['hand_name']:
                     print(Fore.LIGHTCYAN_EX + self.turn.name + Fore.LIGHTYELLOW_EX + ' chặt bài không phù hợp nên bị loại khỏi vòng: ', end='')
                     _p_rint_list_card_(action_player, check_)
+                    input(Fore.LIGHTYELLOW_EX + 'Action người chơi đang chưa đúng, nhấn phím bất kì để bỏ qua dòng cảnh báo này!'.upper() + Style.RESET_ALL)
                     pass
 
                 # Bỏ người chơi này khỏi vòng
@@ -342,6 +351,7 @@ class TLMN_Env(gym.Env):
             if i not in temp_list:
                 print(Fore.LIGHTRED_EX + 'Có ít nhất 1 thẻ bài không phải của người chơi hiện tại: ', end='')
                 _p_rint_list_card(action_player)
+                # input(Fore.LIGHTYELLOW_EX + 'Action người chơi đang chưa đúng, nhấn phím bất kì để bỏ qua dòng cảnh báo này!'.upper() + Style.RESET_ALL)
                 return 'Error_input', -7
 
         if len_ == 1:
@@ -353,6 +363,7 @@ class TLMN_Env(gym.Env):
 
             print(Fore.LIGHTRED_EX + 'Dạng bài không đúng: ', end='')
             _p_rint_list_card(action_player)
+            # input(Fore.LIGHTYELLOW_EX + 'Action người chơi đang chưa đúng, nhấn phím bất kì để bỏ qua dòng cảnh báo này!'.upper() + Style.RESET_ALL)
             return 'Error_input', -7
 
         # Kiểm tra xem có phải là sảnh
@@ -371,4 +382,5 @@ class TLMN_Env(gym.Env):
 
         print(Fore.LIGHTRED_EX + 'Dạng bài không đúng: ', end='')
         _p_rint_list_card(action_player)
+        # input(Fore.LIGHTYELLOW_EX + 'Action người chơi đang chưa đúng, nhấn phím bất kì để bỏ qua dòng cảnh báo này!'.upper() + Style.RESET_ALL)
         return 'Error_input', -7

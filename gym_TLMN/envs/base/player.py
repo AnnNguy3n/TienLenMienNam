@@ -159,6 +159,7 @@ class Player:
                 + [f'{k}_of_a_kind' for k in [3,4]]\
                 + [f'{k}_pairs_straight' for k in [3,4]]\
                 + [f'{k}_straight' for k in range(3,12)]
+
         hand_name_index = _temp_.index(dict_input['Board'].turn_cards['hand_name'])
         hand_name_score = dict_input['Board'].turn_cards['hand_score']
 
@@ -184,16 +185,16 @@ class Player:
 
         # Chủ nhân của bài trên bàn, 0 nếu là mình 114
         temp_6 = -1
-        for i in range(dict_input['Player'].__len__()):
-            if dict_input['Player'][i].name == dict_input['Board'].turn_cards_owner:
-                temp_6 = i
-                break
+        try:
+            temp_6 = list_player_name.index(dict_input['Board'].turn_cards_owner)
+        except:
+            temp_6 = -1
 
         if temp_6 != -1:
             if my_id <= temp_6:
                 temp_6 -= my_id
             else:
-                temp_6 = (3-my_id) + temp_6
+                temp_6 = (4-my_id) + temp_6
 
         return temp_1 + [hand_name_index, hand_name_score] + temp_3 + temp_4 + temp_5 + [temp_6]
 

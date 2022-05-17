@@ -21,7 +21,7 @@ class Agent(Player):
         print(state[110:114], 'tình trạng bỏ vòng')
         print(state[114], 'chủ nhân bộ bài trên bàn')
 
-        # print(self.check_victory(self.get_list_state(dict_input)), 'check victory')
+        print(self.check_victory(self.get_list_state(dict_input)), 'check victory')
 
         # return random.choice(list_action)['list_card']
 
