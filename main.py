@@ -11,7 +11,7 @@ def main():
 
     print([i.name for i in env.players])
 
-    for i in range(500):
+    for i in range(100):
         env.render()
 
         o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))

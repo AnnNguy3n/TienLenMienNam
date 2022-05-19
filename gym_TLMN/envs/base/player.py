@@ -13,6 +13,7 @@ class Player:
     def reset(self):
         self.__played_cards = []
 
+
     @property
     def amount_action_space(self):
         return self.__amount_action_space
