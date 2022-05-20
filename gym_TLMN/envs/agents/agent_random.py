@@ -33,6 +33,15 @@ class Agent(Player):
             else:
                 s_a[f'{id_s}_{t[id_s]}'] = dict_a
 
+        # for id_s in range(len(t)):
+        #     if id_s not in s_a:
+        #         s_a[id_s] = {t[id_s]:dict_a}
+        #     else:
+        #         for id_a in a:
+        #             if id_a in s_a[id_s][t[id_s]]:
+        #                 s_a[id_s][t[id_s]][id_a] += 1
+        #             else:
+        #                 s_a[id_s][t[id_s]][id_a] = 0
         with open('S_A.json', 'w') as f:
             json.dump(s_a, f)
         # for i in s_a:

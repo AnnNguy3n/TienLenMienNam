@@ -24,7 +24,8 @@ def main():
         o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
 
 start = time.time()
-for i in range(1):
+for i in range(10):
+    print(i)
     main()
 
 # end = time.time()
