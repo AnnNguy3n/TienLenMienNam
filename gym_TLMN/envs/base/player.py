@@ -60,10 +60,10 @@ class Player:
     def get_action_space_from_list_state(self, state: list):
         my_list_card = [Card(i) for i in range(52) if state[54:106][i] == 1]
         turn_card_owner = state[114]
-        _temp_ = ['Nothing', 'Single', 'Pair']\
-                + [f'{k}_of_a_kind' for k in [3,4]]\
+        _temp_ = [f'{k}_of_a_kind' for k in [3,4]]\
                 + [f'{k}_pairs_straight' for k in [3,4]]\
-                + [f'{k}_straight' for k in range(3,12)]
+                + [f'{k}_straight' for k in range(3,12)]\
+                + ['Single', 'Pair', 'Nothing']
 
         hand_name = _temp_[state[52]]
         hand_score = state[53]
@@ -88,7 +88,7 @@ class Player:
         if board_turn_cards['hand_name'] == 'Nothing' or board_turn_cards_owner == self.name:
             return possible_action
         
-        list_hand_name = ['Nothing']
+        list_hand_name = []
         if board_turn_cards['hand_name'] in ['Single', 'Pair', '3_of_a_kind']\
                                             + [f'{k}_straight' for k in range(3,12)]:
             if board_turn_cards['hand_score'] <= 47:
@@ -102,6 +102,7 @@ class Player:
                 else:
                     pass
             
+            list_hand_name.append('Nothing')
             list_keys = list(possible_action.keys())
             for hand_name in list_hand_name:
                 if hand_name in list_keys:
@@ -122,7 +123,8 @@ class Player:
             list_hand_name += ['4_pairs_straight']
         else:
             pass
-
+        
+        list_hand_name.append('Nothing')
         list_keys = list(possible_action.keys())
         for hand_name in list_hand_name:
             if hand_name in list_keys:
@@ -137,10 +139,10 @@ class Player:
 
     def possible_action(self, list_card: list):
         possible_action = {}
-        list_hand_name = ['Nothing', 'Single', 'Pair']\
-                        + [f'{k}_of_a_kind' for k in [3,4]]\
+        list_hand_name = [f'{k}_of_a_kind' for k in [3,4]]\
                         + [f'{k}_pairs_straight' for k in [3,4]]\
-                        + [f'{k}_straight' for k in range(3,12)]
+                        + [f'{k}_straight' for k in range(3,12)]\
+                        + ['Single', 'Pair', 'Nothing']
 
         for hand_name in list_hand_name:
             list_action = self.list_card_hand(list_card, hand_name)
@@ -155,10 +157,10 @@ class Player:
         temp_1 = [1 if i in list_played_card else 0 for i in range(52)]
 
         # Bộ hiện tại cần chặn 52 53
-        _temp_ = ['Nothing', 'Single', 'Pair']\
-                + [f'{k}_of_a_kind' for k in [3,4]]\
+        _temp_ = [f'{k}_of_a_kind' for k in [3,4]]\
                 + [f'{k}_pairs_straight' for k in [3,4]]\
-                + [f'{k}_straight' for k in range(3,12)]
+                + [f'{k}_straight' for k in range(3,12)]\
+                + ['Single', 'Pair', 'Nothing']
 
         hand_name_index = _temp_.index(dict_input['Board'].turn_cards['hand_name'])
         hand_name_score = dict_input['Board'].turn_cards['hand_score']
