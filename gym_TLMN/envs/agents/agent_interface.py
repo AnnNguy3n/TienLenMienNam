@@ -9,3 +9,5 @@ agent3 = p3.Agent('Nam')
 agent4 = p4.Agent('Bắc')
 
 list_player = [agent1, agent2, agent3, agent4]
+
+#####
