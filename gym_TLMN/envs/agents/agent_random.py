@@ -17,7 +17,7 @@ class Agent(Player):
         action = random.choice(a)
         self.state_new.append(t)
         self.action_new.append(action)
-        print(self.state_new, self.action_new)
+        # print(self.state_new, self.action_new)
         if self.check_victory(t) == 1:
             print(self.name, 'thắng')
             self.save_json(self.state_new, self.action_new)
@@ -28,7 +28,7 @@ class Agent(Player):
     
     def save_json(self, state_new, action_new):
         try:
-            s_a = json.load(open('S_A.json'))
+            s_a = json.load(open('gym_TLMN/envs/agents/S_A.json'))
         except:
             s_a = {} 
         for id in range(len(state_new) - 1):
@@ -45,5 +45,6 @@ class Agent(Player):
                         s_a[f'{id_s}_{t[id_s]}'][action_new[id]] = {t_n[id_s]:1}
                 else:
                     s_a[f'{id_s}_{t[id_s]}'] = {action_new[id]:{t_n[id_s]:1}}
-        with open('S_A.json', 'w') as f:
+        with open('gym_TLMN/envs/agents/S_A.json', 'w') as f:
             json.dump(s_a, f)
+            
