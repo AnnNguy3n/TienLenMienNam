@@ -10,8 +10,7 @@ class Agent(Player):
         super().__init__(name)
     def action(self, dict_input):
         t = self.get_list_state(dict_input)
-        if t[114] == 0:
-            print(Fore.LIGHTYELLOW_EX + 'Phong khởi đầu vòng mới')
+
         dict_card = {}
         for card in dict_input['Turn_player_cards']:
             dict_card[card] = card.score
@@ -33,8 +32,16 @@ class Agent(Player):
         for i in dict_card:
             print(i.name, dict_card[i], 'stt :', i.stt)
 
+        print('Bài lẻ', list_sc)
+
         action_space = self.action_space(dict_input['Turn_player_cards'], dict_input['Board'].turn_cards, dict_input['Board'].turn_cards_owner)
-        # print(action_space)
+        if t[114] == 0:
+            print(Fore.LIGHTYELLOW_EX + 'Phong khởi đầu vòng mới')
+            if len(list_sc) > 1:
+                for card in dict_card:
+                    if card.score in list_sc:
+                        return [card]
+
         action = action_space[list(action_space.keys())[-1]][0]
         list_card_action = action['list_card']
         len_list_card = len(list_card_action)
@@ -43,16 +50,12 @@ class Agent(Player):
                 action = action_space[list(action_space.keys())[id]][0]
                 list_card_action = action['list_card']
                 len_list_card = len(list_card_action)
-
-        for card in list_card_action:
-            print(card.name, end= ' ')
         for card in dict_card:
             if len(list_card_action) == 1:
                 if card.score in list_sc:
                     if list_card_action[0].score == card.score:
                         if list_card_action[0].stt > card.stt:
-                            list_card_actionc = [card]
-                            break
+                            return [card]
 
         self.check_vtr(dict_input)
         return list_card_action
