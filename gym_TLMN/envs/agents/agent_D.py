@@ -1,47 +1,44 @@
 from ..base.player import Player
 import random
+import math
+import json
+import numpy as np
 from colorama import Fore, Style
-
 
 class Agent(Player):
     def __init__(self, name):
         super().__init__(name)
 
-    def action(self, dict_input):
-        # action_space = self.action_space(dict_input['Turn_player_cards'], dict_input['Board'].turn_cards, dict_input['Board'].turn_cards_owner)
-        # list_action = []
-        # for key in action_space.keys():
-        #     list_action += action_space[key]
+    def action(self,  dict_input):
+        state = dict_input
+        t = self.get_list_state(state)
+        a = self.get_list_index_action(t)
+        action = random.choice(a)
 
-        state = self.get_list_state(dict_input)
-        # print([i for i in range(state[:52].__len__()) if state[:52][i] == 1], 'đã đánh trên bàn')
-        # print(state[52:54], 'index hand_name, hand_score')
-        # print([i for i in range(state[54:106].__len__()) if state[54:106][i] == 1], 'bài của mình')
-        # print(state[106:110], 'số lá còn lại')
-        # print(state[110:114], 'tình trạng bỏ vòng')
-        # print(state[114], 'chủ nhân bộ bài trên bàn')
+        try:
+            s_a = json.load(open('S_A.json'))
+        except:
+            s_a = {} 
+        dict_a = {}
+        for id_a in a:
+            dict_a[f'{id_a}'] = 0
 
-        # print(self.check_victory(self.get_list_state(dict_input)), 'check victory')
+        for id_s in range(len(t)):
+            if f'{id_s}_{t[id_s]}' in s_a:
+                for id_a in a:
+                    if f'{id_a}' in s_a[f'{id_s}_{t[id_s]}']:
+                        s_a[f'{id_s}_{t[id_s]}'][f'{id_a}'] += 1
+                    else:
+                        s_a[f'{id_s}_{t[id_s]}'][f'{id_a}'] = 0
+            else:
+                s_a[f'{id_s}_{t[id_s]}'] = dict_a
 
-        # return random.choice(list_action)['list_card']
-
-
-        list_action = self.get_list_index_action(self.get_list_state(dict_input))
-
-        # print(list_action, 'action có thể làm')
-        action = random.choice(list_action)
-        # print(action, 'action chọn')
-        victory = self.check_victory(self.get_list_state(dict_input))
-        if victory == 1:
-            # print(Fore.LIGHTYELLOW_EX + self.name + ' thắng', end='')
-            pass
-        elif victory == 0:
-            # print(Fore.LIGHTYELLOW_EX + self.name + ' thua', end='')
-            pass
-        elif victory == -1:
-            # print(Fore.LIGHTYELLOW_EX + 'Chưa hết game', end='')
-            pass
-        
-        # print(Style.RESET_ALL)
-
+        with open('S_A.json', 'w') as f:
+            json.dump(s_a, f)
+        # for i in s_a:
+        #     print(i, s_a[i])
+        if self.check_victory(t) == 1:
+            print(self.name, 'thắng')
+        elif self.check_victory(t) == 0:
+            print(self.name, 'Thua')
         return action
