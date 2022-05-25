@@ -4,11 +4,13 @@ import math
 import json
 import numpy as np
 from colorama import Fore, Style
+#
 
 class Agent(Player):
     def __init__(self, name):
         self.state_new = []
         self.action_new = []
+        self.data_json = json.load(open('gym_TLMN/envs/agents/S_A.json'))
         super().__init__(name)
 
     def action(self,  dict_input):
@@ -17,7 +19,8 @@ class Agent(Player):
         action = random.choice(a)
         self.state_new.append(t)
         self.action_new.append(action)
-        # print(self.state_new, self.action_new)
+        if self.check_victory(t) == -1 and len(dict_input['Turn_player_cards']) > 5:
+            pass
         if self.check_victory(t) == 1:
             print(self.name, 'thắng')
             self.save_json(self.state_new, self.action_new)
@@ -48,3 +51,20 @@ class Agent(Player):
         with open('gym_TLMN/envs/agents/S_A.json', 'w') as f:
             json.dump(s_a, f)
             
+
+    def list_action_state(self, a, t):
+        # if 
+        data = self.data_json
+        list_state = []
+        for action in a:
+            s_n = []
+            for id_s in range(len(t)):
+                key_state = f'{id_s}_{t[id_s]}'
+                if action in data[key_state]:
+                    random_weight = random.choices(list(data[key_state][action].keys()), weights = data[key_state][action].values(), k=1)[0]
+                    s_n.append(random_weight)
+                else:
+                    s_n.append(t[id_s])
+            list_state.append(s_n)
+        
+        return list_state
