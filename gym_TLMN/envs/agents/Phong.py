@@ -32,10 +32,10 @@ class Agent(Player):
         len_list_card = len(list_card_action)
         for id in range(len(action_space)):
             if len_list_card < len(action_space[list(action_space.keys())[id]][0]['list_card']):
-                if check_bai_le(list(dict_card.values()), list_card_action):
-                    action = action_space[list(action_space.keys())[id]][0]
-                    list_card_action = action['list_card']
-                    len_list_card = len(list_card_action)
+                # if check_bai_le(list(dict_card.values()), list_card_action):
+                action = action_space[list(action_space.keys())[id]][0]
+                list_card_action = action['list_card']
+                len_list_card = len(list_card_action)
         if t[114] == 0:
             # print(Fore.LIGHTYELLOW_EX + 'Phong khởi đầu vòng mới')
             if len(list_sc) > 2:
@@ -49,10 +49,8 @@ class Agent(Player):
                 if card.score in list_sc:
                     if list_card_action[0].score <= card.score:
                         if card.stt >= list_card_action[0].stt:
-                            # print(('Danh quan le thap nhat'))
                             list_card_action = [card]
 
-        #Check Victory
         # print([i.score for i in list_card_action])
         # print(list(dict_card.values()))
         # print(check_bai_le(list(dict_card.values()), list_card_action))
