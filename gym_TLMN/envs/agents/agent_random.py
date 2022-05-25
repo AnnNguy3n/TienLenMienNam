@@ -19,8 +19,10 @@ class Agent(Player):
         action = random.choice(a)
         self.state_new.append(t)
         self.action_new.append(action)
-        if self.check_victory(t) == -1 and len(dict_input['Turn_player_cards']) > 5:
-            pass
+        # if self.check_victory(t) == -1 and len(dict_input['Turn_player_cards']) > 5:
+        #     pass
+        if self.check_victory(t) == -1:
+            
         if self.check_victory(t) == 1:
             print(self.name, 'thắng')
             self.save_json(self.state_new, self.action_new)
