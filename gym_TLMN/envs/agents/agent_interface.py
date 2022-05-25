@@ -1,7 +1,7 @@
-from gym_TLMN.envs.agents import MA_1 as p1
-from gym_TLMN.envs.agents import MA_2 as p2
-from gym_TLMN.envs.agents import MA_3 as p3
-from gym_TLMN.envs.agents import MA_4 as p4
+from gym_TLMN.envs.agents import random as p1
+from gym_TLMN.envs.agents import random as p2
+from gym_TLMN.envs.agents import random as p3
+from gym_TLMN.envs.agents import random as p4
 
 agent1 = p1.Agent('1')
 agent2 = p2.Agent('2')
