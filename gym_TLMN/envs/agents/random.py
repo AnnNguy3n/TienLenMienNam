@@ -17,7 +17,6 @@ class Agent(Player):
         action = random.choice(a)
         self.check_vtr(dict_input)
 
-        print(turn_win_left(t, PATH))
         return action
     
     def check_vtr(self, dict_input):
