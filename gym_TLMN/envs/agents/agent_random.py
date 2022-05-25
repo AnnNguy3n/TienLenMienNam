@@ -4,8 +4,12 @@ import math
 import json
 import numpy as np
 from colorama import Fore, Style
+import pandas as pd
+import pickle
+import xgboost as xgb
 #
 
+PATH = 'gym_TLMN/envs/agents/model.pkl'
 class Agent(Player):
     def __init__(self, name):
         self.state_new = []
@@ -21,8 +25,9 @@ class Agent(Player):
         self.action_new.append(action)
         # if self.check_victory(t) == -1 and len(dict_input['Turn_player_cards']) > 5:
         #     pass
-        if self.check_victory(t) == -1:
-            
+        # if self.check_victory(t) == -1:
+        print(turn_to_win(t, PATH))
+
         if self.check_victory(t) == 1:
             print(self.name, 'thắng')
             self.save_json(self.state_new, self.action_new)
@@ -70,3 +75,12 @@ class Agent(Player):
             list_state.append(s_n)
         
         return list_state
+
+def turn_to_win(state, PATH):
+    feature = ['107', '108', '44', '45', '110', '50', '109', '43', '48', '39', '49', '47', '46', '42', '40', '41', '34', '36', '38', '28', '51', '37', '54', '32', '31', '30', '35', '23', '52', '27', '10', '24', '20', '19', '115', '26', '14', '33', '22', '16', '18', '12', '29', '13', '17', '15', '11', '21', '8', '53', '25', '7', '9', '2', '114', '6', '4', '5', '1', '3', '113', '70', '66', '62', '112']
+    dat = pd.DataFrame([state])
+    dat.columns = [str(i) for i in range(1, len(state)+1)]
+    dataset = dat[feature]
+    loaded_model = pickle.load(open(PATH, 'rb'))
+    turn_win = loaded_model.predict(dataset)
+    return math.ceil(turn_win[0])
