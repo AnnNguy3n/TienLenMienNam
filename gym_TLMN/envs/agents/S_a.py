@@ -24,11 +24,8 @@ class Agent(Player):
         action = random.choice(a)
         self.state_new.append(t)
         self.action_new.append(action)
-        # if self.check_victory(t) == 1:
-        #     self.save_json(self.state_new, self.action_new)
-        # elif self.check_victory(t) == 0:
-        self.save_json(self.state_new, self.action_new)
-        # self.check_vtr(dict_input)
+        if self.check_victory(t) != -1:
+            self.save_json(self.state_new, self.action_new)
         return action
     
     def save_json(self, state_new, action_new):
