@@ -9,7 +9,7 @@ env = gym.make('gym_TLMN-v0')
 def main():
     env.reset()
 
-    print([i.name for i in env.players])
+    # print([i.name for i in env.players])
 
     for i in range(100):
         env.render()
@@ -22,9 +22,9 @@ def main():
         env.render()
 
         o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
-    return env.p_name_victory
-# start = time.time()
-print(Counter(main() for i in range(1)))
+    print(env.p_name_victory)
+for i in range(1):
+    main() 
 # while main() != 'Dong':
 #     print('Thua')
 # for i in range(1):

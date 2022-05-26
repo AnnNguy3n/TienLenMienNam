@@ -7,9 +7,11 @@ from colorama import Fore, Style
 import pandas as pd
 import pickle
 import xgboost as xgb
-#
-
-PATH = 'gym_TLMN/envs/agents/model.pkl'
+import warnings 
+warnings.filterwarnings('ignore')
+# PATH = 'gym_TLMN/envs/agents/model (1).pkl'
+# PATH = 'gym_TLMN/envs/agents/finalized_model1.sav'
+PATH = 'gym_TLMN/envs/agents/model (1).pkl'
 class Agent(Player):
     def __init__(self, name):
         self.state_new = []
@@ -26,14 +28,24 @@ class Agent(Player):
         # if self.check_victory(t) == -1 and len(dict_input['Turn_player_cards']) > 5:
         #     pass
         # if self.check_victory(t) == -1:
-        print(turn_to_win(t, PATH))
-
-        if self.check_victory(t) == 1:
-            print(self.name, 'thắng')
-            self.save_json(self.state_new, self.action_new)
-        elif self.check_victory(t) == 0:
-            print(self.name, 'Thua')
-            self.save_json(self.state_new, self.action_new)
+        # print('turn_to_win', turn_to_win(t, PATH))
+        turn_win = []
+        if self.check_victory(t) == -1:
+            list_st = self.list_action_state( a, t)
+            for id_a in range(len(a)):
+                # print(list_st[id_a])
+                turn_win.append(turn_to_win(list_st[id_a], PATH))
+        # print(a)
+        # print(turn_win)
+        if len(turn_win) > 0:
+            print(a[turn_win.index(min(turn_win))])
+            return a[turn_win.index(min(turn_win))]
+        # if self.check_victory(t) == 1:
+        #     print(self.name, 'thắng')
+        #     self.save_json(self.state_new, self.action_new)
+        # elif self.check_victory(t) == 0:
+        #     print(self.name, 'Thua')
+        #     self.save_json(self.state_new, self.action_new)
         return action
     
     def save_json(self, state_new, action_new):
@@ -67,9 +79,9 @@ class Agent(Player):
             s_n = []
             for id_s in range(len(t)):
                 key_state = f'{id_s}_{t[id_s]}'
-                if action in data[key_state]:
-                    random_weight = random.choices(list(data[key_state][action].keys()), weights = data[key_state][action].values(), k=1)[0]
-                    s_n.append(random_weight)
+                if str(action) in data[key_state]:
+                    random_weight = random.choices(list(data[key_state][str(action)].keys()), weights = data[key_state][str(action)].values(), k=1)[0]
+                    s_n.append(int(random_weight))
                 else:
                     s_n.append(t[id_s])
             list_state.append(s_n)
@@ -77,7 +89,7 @@ class Agent(Player):
         return list_state
 
 def turn_to_win(state, PATH):
-    feature = ['107', '108', '44', '45', '110', '50', '109', '43', '48', '39', '49', '47', '46', '42', '40', '41', '34', '36', '38', '28', '51', '37', '54', '32', '31', '30', '35', '23', '52', '27', '10', '24', '20', '19', '115', '26', '14', '33', '22', '16', '18', '12', '29', '13', '17', '15', '11', '21', '8', '53', '25', '7', '9', '2', '114', '6', '4', '5', '1', '3', '113', '70', '66', '62', '112']
+    feature = ['107', '110', '45', '108', '46', '43', '44', '109', '36', '48', '51', '42', '39', '31', '47', '24', '38', '29', '35', '28', '49', '30', '40', '32', '33', '27', '6', '17', '41', '34', '50', '37', '25', '9', '54', '22', '14', '10', '5', '8', '26', '19', '18', '115', '23', '16', '15', '13', '11', '21', '20', '12', '52', '1', '4', '7', '2', '53', '114', '3', '58', '113', '61', '77', '60']
     dat = pd.DataFrame([state])
     dat.columns = [str(i) for i in range(1, len(state)+1)]
     dataset = dat[feature]
