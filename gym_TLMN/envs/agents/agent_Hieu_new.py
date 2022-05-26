@@ -46,7 +46,7 @@ class Agent(Player):
         action_space = self.action_space(dict_input['Turn_player_cards'], dict_input['Board'].turn_cards, dict_input['Board'].turn_cards_owner)
         dict_action = {}
         dict_action_len = {}
-        for key in list(action_space.keys())[1:]:
+        for key in list(action_space.keys())[:-1]:
             for action in action_space[key]:
                 dict_action[tuple(action['list_card'])] = action['hand_name']
                 dict_action_len[tuple(action['list_card'])] = len(action['list_card'])
@@ -56,9 +56,7 @@ class Agent(Player):
             if "3_of_a_kind" in  dict_action[item[0]] or 'straight' in  dict_action[item[0]] and 'pairs_straight' not in dict_action[item[0]]:
                 return list(item[0])
 
-
-
-        for action in list(dict_action.keys()):
+        for action in list(dict_action.keys())[:-1]:
             action1 = list(action)
             if len(action1) == 1:
                 can_return = True
@@ -91,7 +89,6 @@ class Agent(Player):
                 elif can_return == True:
                     print('TOANG4')
                     return action1
-            
             elif len(action1) > 1:
                 can_return = True
                 count_3_kind = 0
@@ -114,10 +111,11 @@ class Agent(Player):
                     return action1
             else:
                 print('TOANG5.5')
-                
+                # print(action1)
                 return action1
 
-        for action in action_space[list(action_space.keys())[-1]]:
+        for action in action_space[list(action_space.keys())[-2]]:
+            # print(action_space)
             if len(action['list_card']) >= state[106] - 1:
                 print('TOANG6')
                 return action['list_card']
@@ -125,7 +123,7 @@ class Agent(Player):
                 if action['hand_score'] < 45:
                     print('TOANG7')
                     return action['list_card']
-        for action in action_space[list(action_space.keys())[-1]]:
+        for action in action_space[list(action_space.keys())[-2]]:
             print('TOANG8')
             return action['list_card']  
 
@@ -136,7 +134,7 @@ class Agent(Player):
 
         dict_action = {}
         dict_action_len = {}
-        for key in list(action_space.keys())[1:]:
+        for key in list(action_space.keys())[:-1]:
             for action in action_space[key]:
                 dict_action[tuple(action['list_card'])] = action['hand_name']
                 dict_action_len[tuple(action['list_card'])] = len(action['list_card'])
@@ -166,12 +164,11 @@ class Agent(Player):
                 for action in list_type_action:
                     action_last[tuple(action['list_card'])] = action['hand_score']
             #Cóc:
-            list_key = list(action_space.keys())[1:]
+            list_key = list(action_space.keys())[:-1]
             # print(action_space)
             for i in range(len(list_key) -1):
-                print(list_key[i])
+                # print(list_key[i])
                 for action1 in action_space[list_key[i]]:
-
                     check = True
                     for j in range(i+1, len(list_key)):
                         for action2 in action_space[list_key[j]]:
@@ -182,7 +179,6 @@ class Agent(Player):
                         if action1['hand_score'] < 45:
                             return action1['list_card']
             #nếu các bộ trên đều liên quan nhau
-
             for action in action_space[list_key[-1]]:
                 if len(action['list_card']) >= state[106] - 1:
                     print('DONE3')
