@@ -46,6 +46,8 @@ class Agent(Player):
         # elif self.check_victory(t) == 0:
         #     print(self.name, 'Thua')
         #     self.save_json(self.state_new, self.action_new)
+        print(t)
+        print(action)
         return action
     
     def save_json(self, state_new, action_new):

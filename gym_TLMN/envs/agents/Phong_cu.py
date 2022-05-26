@@ -50,7 +50,7 @@ class Agent(Player):
                 action = action_space[list(action_space.keys())[id]][0]
                 list_card_action = action['list_card']
                 len_list_card = len(list_card_action)
-
+                
         #Nếu chặt một lá thì đánh lá bài có giá trị thấp nhất
         for card in dict_card:
             if len(list_card_action) == 1:
@@ -58,7 +58,6 @@ class Agent(Player):
                     if list_card_action[0].score == card.score:
                         if list_card_action[0].stt > card.stt:
                             return [card]
-
         #Check Victory
         self.check_vtr(dict_input)
         return list_card_action

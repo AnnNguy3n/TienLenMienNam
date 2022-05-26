@@ -22,9 +22,9 @@ def main():
         env.render()
 
         o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
-    print(env.p_name_victory)
-for i in range(1):
-    main() 
+    return env.p_name_victory
+
+print(Counter(main() for i in range(1)))
 # while main() != 'Dong':
 #     print('Thua')
 # for i in range(1):
