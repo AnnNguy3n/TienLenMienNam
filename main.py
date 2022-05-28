@@ -5,44 +5,26 @@ import gym_TLMN
 import time
 import pandas as pd
 
+
+
+from contextlib import contextmanager
+import sys, os
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
+
 env = gym.make('gym_TLMN-v0')
-
-def main():
-    env.reset()
-
-    print([i.name for i in env.players])
-
-    for i in range(500):
-        env.render()
-
-        o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
-        if done:
-            break
-
-    for i in range(env.players.__len__()):
-        env.render()
-
-        o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
-    
-    return env.p_name_victory
-
-start = time.time()
-
-print(Counter(main() for i in range(1)))
-
-end = time.time()
-print(end - start, 'sec')
-
-
-
-
-
-
 def main(env):
-
     env.reset() 
     for i in range(500):
-        env.render()
+        # env.render()
         o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
         if done:
             break
@@ -67,13 +49,17 @@ if __name__ == '__main__':
         result_for_elo = pd.DataFrame({'player':[], 'score':[]})
     list_player = []
     list_score = []
+    print('tổng số trận:', len(env.list_all_game))
+    print(env.list_all_game)
    
-    # for i in range(1, len(env.list_all_game)+1):
-    for i in range(1, 10):
-        print('Game', i)
-        x, y = main(env)
-        list_player.append(x)
-        list_score.append(y)
+    for i in range(1, len(env.list_all_game)+1):
+    
+    # for i in range(1, 2):
+        print('Game', i, env.id_tran)
+        with suppress_stdout():
+            x, y = main(env)
+            list_player.append(x)
+            list_score.append(y)
     list_player = list(result_for_elo['player']) + list_player
     list_score = list(result_for_elo['score']) + list_score
     result_for_elo_new = pd.DataFrame()
