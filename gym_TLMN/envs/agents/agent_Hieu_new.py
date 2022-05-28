@@ -14,8 +14,8 @@ class Agent(Player):
     def action(self, dict_input):
         state = self.get_list_state(dict_input)
         list_action = self.get_list_index_action(self.get_list_state(dict_input))
-        print(list_action, 'action có thể làm')
-        print('PASS')
+        # print(list_action, 'action có thể làm')
+        # print('PASS')
         victory = self.check_victory(self.get_list_state(dict_input))
         if victory == 1:
             print(Fore.LIGHTYELLOW_EX + self.name + ' thắng', end='')
@@ -29,9 +29,9 @@ class Agent(Player):
         
         print(Style.RESET_ALL)
         card_number = state[107:110]
-        print(state[110:114], 'tình trạng bỏ vòng')
+        # print(state[110:114], 'tình trạng bỏ vòng')
         if state[114] == 0:     #bđ vòng mới
-            print('đầu vòng')
+            # print('đầu vòng')
             return self.start_circle(dict_input)
         #đánh nối vòng
         else:
@@ -63,11 +63,11 @@ class Agent(Player):
                 count_pair = 0
                 count_straight = 0
                 count_contain = 0
-                print(can_return,count_pair,count_straight,count_contain)
+                # print(can_return,count_pair,count_straight,count_contain)
                 for i in range(2, len(list_key)):
                     for action2 in all_action[list_key[i]]:
                         if self.check_action(action1, action2['list_card']) > 0:
-                            print('_straight', action2['hand_name'])
+                            # print('_straight', action2['hand_name'])
                             if action2['hand_name'] == 'Pair':
                                 can_return = False
                                 count_pair += 1
@@ -78,16 +78,16 @@ class Agent(Player):
                                 if action1[0] in action2['list_card']:
                                     count_contain += 1
                 if count_pair == 2 and count_straight > 0:
-                    print('TOANG2')
+                    # print('TOANG2')
                     return action1
                 elif count_pair == 1:
-                    print('TOANG3')
+                    # print('TOANG3')
                     return action1
                 elif count_pair == 0 and count_straight > 2:
-                    print('TOANG3')
+                    # print('TOANG3')
                     return action1
                 elif can_return == True:
-                    print('TOANG4')
+                    # print('TOANG4')
                     return action1
             elif len(action1) > 1:
                 can_return = True
@@ -104,27 +104,27 @@ class Agent(Player):
                                     count_straight += 1
                                     can_return = False
                 if count_3_kind == 1 and count_straight > 0:
-                    print('TOANG5')
+                    # print('TOANG5')
                     return action1
                 elif can_return == True:
-                    print('TOANG5.05')
+                    # print('TOANG5.05')
                     return action1
             else:
-                print('TOANG5.5')
+                # print('TOANG5.5')
                 # print(action1)
                 return action1
 
         for action in action_space[list(action_space.keys())[-2]]:
             # print(action_space)
             if len(action['list_card']) >= state[106] - 1:
-                print('TOANG6')
+                # print('TOANG6')
                 return action['list_card']
             if '4_of_a_kind' not in action['hand_name'] and '_pairs_straight' not in action['hand_name']:
                 if action['hand_score'] < 45:
-                    print('TOANG7')
+                    # print('TOANG7')
                     return action['list_card']
         for action in action_space[list(action_space.keys())[-2]]:
-            print('TOANG8')
+            # print('TOANG8')
             return action['list_card']  
 
     def start_circle(self, dict_input):
@@ -148,13 +148,13 @@ class Agent(Player):
             for list_type_action in action_space.values():
                 for action in list_type_action:
                     if len(action['list_card']) == state[106]:
-                        print('toang106')
+                        # print('toang106')
                         return action['list_card']
                     else:
                         action_last[tuple(action['list_card'])] = action['hand_score']
             sort_action = sorted(dict_action.items(), key=lambda x:x[1], reverse= False)
             # print(sort_action)
-            print('toang00')
+            # print('toang00')
             return list(sort_action[0][0])
         #nếu đối thủ còn nhiều bài
         else:
@@ -175,16 +175,13 @@ class Agent(Player):
                             if self.check_action(action1['list_card'], action2['list_card']) > 0:
                                 check = False
                     if check == True:
-                        print('DONE1')
                         if action1['hand_score'] < 45:
                             return action1['list_card']
             #nếu các bộ trên đều liên quan nhau
             for action in action_space[list_key[-1]]:
                 if len(action['list_card']) >= state[106] - 1:
-                    print('DONE3')
                     return action['list_card']
                 if '4_of_a_kind' not in action['hand_name'] and '_pairs_straight' not in action['hand_name']:
-                    print('DONE2')
                     return action['list_card']
             for action in action_space[list_key[-1]]:
                 return action['list_card']
