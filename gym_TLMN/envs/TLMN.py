@@ -6,6 +6,7 @@ from gym_TLMN.envs.base.board import Board
 from gym_TLMN.envs.base.card import Card
 from gym_TLMN.envs.base.player import Player
 from gym_TLMN.envs.agents import agent_interface
+import itertools
 
 def p_rint_horizontal_lines():
     print('----------------------------------------------------------------------------------------------------')
@@ -26,11 +27,17 @@ class TLMN_Env(gym.Env):
     def __init__(self):
         self.__full_action = list(pandas.read_csv('gym_TLMN/envs/action_space.csv')['action_code'])
         self.reset()
+        #Hiếu thêm
+        self.list_all_game = [list(item) for item in itertools.combinations(agent_interface.list_player, 4)]
+        self.id_tran = 0
+        #Hiếu end
 
     def reset(self):
         self.board = Board()
         amount_player = min(agent_interface.list_player.__len__(), 4)
-        self.players = random.sample(agent_interface.list_player, k=amount_player)
+        # self.players = random.sample(agent_interface.list_player, k=amount_player)
+        self.player = self.list_all_game[self.id_tran]
+        self.id_tran += 1
         self.players_cards = {}
         for i in range(amount_player):
             self.players_cards[self.players[i].name] = []
