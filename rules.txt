@@ -1,0 +1,16 @@
+Luật chơi:
+    - Đi theo vòng, mỗi người đánh một lượt
+    - Nếu đang trong vòng, người nào không đánh sẽ bị loại ra khỏi vòng,
+        không được tiếp tục chơi vòng đó nữa (trừ một số trường hợp đặc biệt)
+    - Người nào khởi đầu vòng chơi mới mà không đánh gì cũng sẽ bị mất lượt,
+        nhưng không bị loại ra khỏi vòng chơi
+    - Trường hợp đặc biệt, khi người chơi đánh các "hand" bài liên quan đến các lá 2,
+        bộ 3 đôi thông, bộ 4 đôi thông, tứ quý, thì tất cả người chơi sẽ được thêm lại
+        vào vòng. Vòng chơi sẽ tiếp tục cho đến khi một người chơi đánh mà tất cả người
+        chơi khác không chặn được, thì sẽ kết thúc vòng chơi đó
+    - Luật chặn:
+        + Các bộ bài ngoại trừ trường hợp đặc biệt, chỉ có thể chặn nếu cùng bộ và bộ
+            chặn có lá cao nhất mạnh hơn bộ bị chặn
+        + 3 đôi thông chặn được 1 cây 2 và bộ 3 đôi thông nhỏ hơn
+        + tứ quý chặn được 3 đôi thông và 1 hoặc 2 cây 2, và cả bộ tứ quý nhỏ hơn
+        + 4 đôi thông chặn được 1 hoặc 2 cây 2, tứ quý, 3 đôi thông và cả bộ 4 đôi thông nhỏ hơn

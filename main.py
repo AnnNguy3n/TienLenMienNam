@@ -10,7 +10,7 @@ env = gym.make('gym_TLMN-v0')
 def main():
     env.reset()
 
-    print([i.name for i in env.players])
+    # print([i.name for i in env.players])
 
     for i in range(500):
         env.render()
@@ -24,11 +24,12 @@ def main():
 
         o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
     
+    print(env.p_name_victory)
     return env.p_name_victory
 
 start = time.time()
 
-print(Counter(main() for i in range(1)))
+print(Counter(main() for i in range(1000)))
 
 end = time.time()
 print(end - start, 'sec')

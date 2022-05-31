@@ -8,10 +8,11 @@ class Agent(Player):
         super().__init__(name)
 
     def action(self, dict_input):
-        # action_space = self.action_space(dict_input['Turn_player_cards'], dict_input['Board'].turn_cards, dict_input['Board'].turn_cards_owner)
-        # list_action = []
-        # for key in action_space.keys():
-        #     list_action += action_space[key]
+        
+        action_space = self.action_space(dict_input['Turn_player_cards'], dict_input['Board'].turn_cards, dict_input['Board'].turn_cards_owner)
+        list_action = []
+        for key in action_space.keys():
+            list_action += action_space[key]
 
         state = self.get_list_state(dict_input)
         # print([i for i in range(state[:52].__len__()) if state[:52][i] == 1], 'đã đánh trên bàn')
@@ -45,3 +46,11 @@ class Agent(Player):
         # print(Style.RESET_ALL)
 
         return action
+
+        # my_cards = dict_input['Turn_player_cards'].copy()
+        # board = dict_input['Board']
+
+        # print(self.action_space(my_cards, board.turn_cards, board.turn_cards_owner))
+
+
+        # return []
