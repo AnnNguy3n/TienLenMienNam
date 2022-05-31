@@ -9,13 +9,15 @@ import pickle
 import xgboost as xgb
 import warnings 
 warnings.filterwarnings('ignore')
-# PATH = 'gym_TLMN/envs/agents/model (1).pkl'
-# PATH = 'gym_TLMN/envs/agents/finalized_model1.sav'
-PATH = 'gym_TLMN/envs/agents/model (1).pkl'
+def fxn():
+    warnings.warn("deprecated", DeprecationWarning)
+
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    fxn()
+PATH = 'gym_TLMN/envs/agents/finalized_model.sav'
 class Agent(Player):
     def __init__(self, name):
-        self.state_new = []
-        self.action_new = []
         self.data_json = json.load(open('gym_TLMN/envs/agents/S_A.json'))
         super().__init__(name)
 
@@ -23,56 +25,15 @@ class Agent(Player):
         t = self.get_list_state(dict_input)
         a = self.get_list_index_action(t)
         action = random.choice(a)
-        self.state_new.append(t)
-        self.action_new.append(action)
-        # if self.check_victory(t) == -1 and len(dict_input['Turn_player_cards']) > 5:
-        #     pass
-        # if self.check_victory(t) == -1:
-        # print('turn_to_win', turn_to_win(t, PATH))
         turn_win = []
         if self.check_victory(t) == -1:
             list_st = self.list_action_state( a, t)
             for id_a in range(len(a)):
-                # print(list_st[id_a])
                 turn_win.append(turn_to_win(list_st[id_a], PATH))
-        # print(a)
-        # print(turn_win)
         if len(turn_win) > 0:
-            print(a[turn_win.index(min(turn_win))])
             return a[turn_win.index(min(turn_win))]
-        # if self.check_victory(t) == 1:
-        #     print(self.name, 'thắng')
-        #     self.save_json(self.state_new, self.action_new)
-        # elif self.check_victory(t) == 0:
-        #     print(self.name, 'Thua')
-        #     self.save_json(self.state_new, self.action_new)
-        print(t)
-        print(action)
         return action
-    
-    def save_json(self, state_new, action_new):
-        try:
-            s_a = json.load(open('gym_TLMN/envs/agents/S_A.json'))
-        except:
-            s_a = {} 
-        for id in range(len(state_new) - 1):
-            t = state_new[id]
-            t_n = state_new[id+1]
-            for id_s in range(len(t)):
-                if f'{id_s}_{t[id_s]}' in s_a:
-                    if action_new[id] in s_a[f'{id_s}_{t[id_s]}']:
-                        if t_n[id_s] in s_a[f'{id_s}_{t[id_s]}'][action_new[id]]:
-                            s_a[f'{id_s}_{t[id_s]}'][action_new[id]][t_n[id_s]] += 1
-                        else:
-                            s_a[f'{id_s}_{t[id_s]}'][action_new[id]][t_n[id_s]] = 1
-                    else:
-                        s_a[f'{id_s}_{t[id_s]}'][action_new[id]] = {t_n[id_s]:1}
-                else:
-                    s_a[f'{id_s}_{t[id_s]}'] = {action_new[id]:{t_n[id_s]:1}}
-        with open('gym_TLMN/envs/agents/S_A.json', 'w') as f:
-            json.dump(s_a, f)
             
-
     def list_action_state(self, a, t):
         # if 
         data = self.data_json
