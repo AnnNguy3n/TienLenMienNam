@@ -14,19 +14,19 @@ class Agent(Player):
     def action(self,  dict_input):
         t = self.get_list_state(dict_input)
         a = self.get_list_index_action(t)
-        action = random.choice(a)
+        # action = random.choice(a)
         self.check_vtr(dict_input)
 
         return action
     
-    def check_vtr(self, dict_input):
-        victory = self.check_victory(self.get_list_state(dict_input))
-        if victory == 1:
-            print(self.name, 'Thắng')
-            pass
-        elif victory == 0:
-            print(self.name, 'Thua')
-            pass
+    # def check_vtr(self, dict_input):
+    #     victory = self.check_victory(self.get_list_state(dict_input))
+    #     if victory == 1:
+    #         print(self.name, 'Thắng')
+    #         pass
+    #     elif victory == 0:
+    #         print(self.name, 'Thua')
+    #         pass
 
 def turn_win_left(state, PATH):
     """

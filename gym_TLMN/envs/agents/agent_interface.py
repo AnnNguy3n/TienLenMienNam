@@ -1,7 +1,7 @@
-from gym_TLMN.envs.agents import MA_1 as p1
-from gym_TLMN.envs.agents import MA_2 as p2
-from gym_TLMN.envs.agents import MA_3 as p3
-from gym_TLMN.envs.agents import MA_4 as p4
+from gym_TLMN.envs.agents import MA as p1
+from gym_TLMN.envs.agents import MA as p2
+from gym_TLMN.envs.agents import MA as p3
+from gym_TLMN.envs.agents import MA as p4
 
 # from gym_TLMN.envs.agents import MA_1 as p1
 # from gym_TLMN.envs.agents import random as p2
