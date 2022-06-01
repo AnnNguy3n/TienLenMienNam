@@ -29,7 +29,7 @@ def main():
 
 start = time.time()
 
-print(Counter(main() for i in range(1000)))
+print(Counter(main() for i in range(1)))
 
 end = time.time()
 print(end - start, 'sec')
