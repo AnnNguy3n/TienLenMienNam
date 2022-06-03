@@ -25,7 +25,7 @@ class Agent(Player):
         winning = self.check_victory(State)
         if winning != -1:
             try:
-                with open(path + "envs/agents/model.json", 'r') as openfile:
+                with open(path + "model.json", 'r') as openfile:
                     model = json.load(openfile)
             except:
                 model = [[{} for _ in range(len(State))] for _ in range(self.amount_action_space)]
