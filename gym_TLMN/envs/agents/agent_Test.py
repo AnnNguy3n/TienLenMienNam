@@ -1,3 +1,4 @@
+import random
 from ..base.player import Player
 
 class Agent(Player):
@@ -6,6 +7,7 @@ class Agent(Player):
         self.history = []
     
     def action(self, dict_input):
-        self.history.append(self.history.__len__())
-        print(self.history)
-        return []
+        list_action = self.get_list_index_action(self.get_list_state(dict_input))
+        # print(self.history)
+        # self.history.append(self.history.__len__())
+        return random.choice(list_action)

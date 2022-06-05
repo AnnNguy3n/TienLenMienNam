@@ -25,10 +25,11 @@ class TLMN_Env(gym.Env):
 
     def __init__(self):
         self.__full_action = list(pandas.read_csv('gym_TLMN/envs/action_space.csv')['action_code'])
+        self.board = Board()
         self.reset()
 
     def reset(self):
-        self.board = Board()
+        self.board.reset()
         temp = random.sample([i for i in range(agent_interface.lst.__len__())], k=min(agent_interface.lst.__len__(), 4))
         self.players = [agent_interface.lst[i].Agent(agent_interface.lst_name[i]) for i in temp]
         self.players_cards = {}
@@ -57,7 +58,6 @@ class TLMN_Env(gym.Env):
             random.shuffle(hidden_cards)
             i = 0
             for player in self.players:
-                player.reset()
                 temp_list = [hidden_cards[j] for j in range(total_play_cards) if j % self.players.__len__() == i]
                 temp_list.sort(key=lambda x:x.stt)
 
@@ -94,7 +94,7 @@ class TLMN_Env(gym.Env):
 
         self.board._Board__hidden_cards = hidden_cards[total_play_cards:]
         self.dict_input['Turn_player_cards'] = self.players_cards[self.turn.name]
-        p_rint_horizontal_lines()
+        # p_rint_horizontal_lines()
 
     def close(self):
         if self.p_name_victory != 'None':
