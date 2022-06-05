@@ -29,10 +29,10 @@ class TLMN_Env(gym.Env):
 
     def reset(self):
         self.board = Board()
-        amount_player = min(agent_interface.list_player.__len__(), 4)
-        self.players = random.sample(agent_interface.list_player, k=amount_player)
+        temp = random.sample([i for i in range(agent_interface.lst.__len__())], k=min(agent_interface.lst.__len__(), 4))
+        self.players = [agent_interface.lst[i].Agent(agent_interface.lst_name[i]) for i in temp]
         self.players_cards = {}
-        for i in range(amount_player):
+        for i in range(temp.__len__()):
             self.players_cards[self.players[i].name] = []
         
         self.turn = random.choice(self.players)
@@ -41,7 +41,7 @@ class TLMN_Env(gym.Env):
         self.dict_input = {
             'Board': self.board,
             'Player': self.players,
-            'Playing_id': [i for i in range(amount_player)],
+            'Playing_id': [i for i in range(temp.__len__())],
             'Turn_id': self.players.index(self.turn),
             'Turn_player_cards': []
         }

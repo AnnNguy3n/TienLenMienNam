@@ -12,7 +12,7 @@ def main():
 
     # print([i.name for i in env.players])
 
-    for i in range(500):
+    for i in range(20):
         env.render()
 
         o,a,done,t = env.step(env.turn.action(deepcopy(env.dict_input)))
@@ -29,7 +29,7 @@ def main():
 
 start = time.time()
 
-print(Counter(main() for i in range(1)))
+print(Counter(main() for i in range(100)))
 
 end = time.time()
 print(end - start, 'sec')
