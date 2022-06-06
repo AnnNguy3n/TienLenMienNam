@@ -124,4 +124,6 @@ class Agent(Player):
                 np.save(f, min_limit)
             with open(path+'model.json', 'w') as f:
                 json.dump(model, f)
+            self.states = []
+            self.actions = []
         return action
