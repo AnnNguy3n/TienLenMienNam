@@ -39,7 +39,7 @@ def main():
     return env.p_name_victory
 
 count = {}
-for van in range(100):
+for van in range(10000):
     with suppress_stdout():
         name = main()
     if name in count.keys():
